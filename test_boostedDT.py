@@ -12,6 +12,8 @@ import numpy as np
 from sklearn import datasets
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
+from sklearn import svm
+from sklearn import neighbors
 
 from boostedDT import BoostedDT
 
@@ -72,4 +74,23 @@ for i in range(0, challengePred.size):
     predictions += str(int(challengePred[i])) + ","  
 predictions = predictions[:-1]
 # print predictions
-	
+
+# now, choose a new machine learning classifier
+linearSVC = svm.LinearSVC()
+linearSVC.fit(Xtrain, ytrain)
+train_linear_svc_pred = linearSVC.predict(Xtrain)
+accuracyLinearSVC = accuracy_score(ytrain, train_linear_svc_pred)
+print "accuracy for the linear svc training is " + str(accuracyLinearSVC)
+challenge_linear_svc_pred = linearSVC.predict(testDataset)
+
+kNeighbors = neighbors.KNeighborsClassifier()
+kNeighbors.fit(Xtrain, ytrain)
+kNeighbors_pred = kNeighbors.predict(Xtrain)
+accuracykNN = accuracy_score(ytrain, kNeighbors_pred)
+print "accuracy for the kNN training is " + str(accuracykNN)
+challenge_kNN_pred = kNeighbors.predict(testDataset)
+predictions = ""
+for i in range(0, challenge_kNN_pred.size):
+    predictions += str(int(challenge_kNN_pred[i])) + ","  
+predictions = predictions[:-1]
+# print predictions

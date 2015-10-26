@@ -5,6 +5,7 @@
 
 import numpy as np
 from sklearn import tree
+from sklearn import neighbors
 
 class BoostedDT:
 
