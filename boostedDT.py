@@ -32,11 +32,8 @@ class BoostedDT:
 	self.classes = np.unique(y)
 		
 	n,d = X.shape
-
 	self.betas = np.zeros(self.numBoostingIters)
-
 	instance_weights = np.ones(n) / float(n)
-        
         
         # For T iterations
         for iterNum in range(0, self.numBoostingIters):
@@ -56,8 +53,13 @@ class BoostedDT:
 	    self.betas[iterNum] = cur_beta
           
             # Update all instance Weights
-            instance_weights = instance_weights * np.exp( -self.betas[iterNum] * (((y == cur_pred) * 2) - 1))
-            
+	    for i in range(0,n):
+		isCorrect = 0
+		if cur_pred[i] == y[i]:
+		    isCorrect = 1
+		if isCorrect == 1:
+		    instance_weights[i] = instance_weights[i] * np.exp(-1*cur_beta)
+
 	    # Normalize the distribution
             normal_sum = np.sum(instance_weights)
 	    for i in range(0,n):
@@ -77,7 +79,7 @@ class BoostedDT:
         
         for i in range(0, self.numBoostingIters):
             cur_y_pred = self.clf[i].predict(X)
-            for k in range(0, self.numOfClasses):
-                beta_matrix[:, k] = beta_matrix[:, k] + (cur_y_pred == self.classes[k]) * self.betas[i]
+            for j in range(0, self.numOfClasses):
+                beta_matrix[:, j] = beta_matrix[:, j] + (cur_y_pred == self.classes[j]) * self.betas[i]
           
         return self.classes[np.argmax(beta_matrix, axis = 1)]
