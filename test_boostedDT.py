@@ -54,3 +54,19 @@ accuracyBoostedDT = accuracy_score(ytest, ypred_BoostedDT)
 
 print "Decision Tree Accuracy = "+str(accuracyDT)
 print "Boosted Decision Tree Accuracy = "+str(accuracyBoostedDT)
+
+# predict data/challengeTrainLabeled.dat
+newBoosted = BoostedDT(numBoostingIters=100, maxTreeDepth=2)
+trainDataset = np.loadtxt('data/challengeTrainLabeled.dat', delimiter=',')
+n,d = trainDataset.shape
+Xtrain = trainDataset[:,:d-1]
+ytrain = trainDataset[:,d-1]
+testDataset = np.loadtxt('data/challengeTestUnlabeled.dat', delimiter=',')
+newBoosted.fit(Xtrain, ytrain)
+challengePred = newBoosted.predict(testDataset)
+predictions = ""
+for i in range(0, challengePred.size):
+    predictions += str(int(challengePred[i])) + ","  
+predictions = predictions[:-1]
+print predictions
+	
