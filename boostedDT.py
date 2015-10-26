@@ -56,13 +56,12 @@ class BoostedDT:
 	    self.betas[iterNum] = cur_beta
           
             # Update all instance Weights
-            if(iterNum < self.numBoostingIters - 1):
-                instance_weights = instance_weights * np.exp( -self.betas[iterNum] * (((y == cur_pred) * 2) - 1))
+            instance_weights = instance_weights * np.exp( -self.betas[iterNum] * (((y == cur_pred) * 2) - 1))
             
-	        # Normalize the distribution
-                normal_sum = np.sum(instance_weights)
-	        for i in range(0,n):
-	            instance_weights[i] = instance_weights[i] / normal_sum
+	    # Normalize the distribution
+            normal_sum = np.sum(instance_weights)
+	    for i in range(0,n):
+	        instance_weights[i] = instance_weights[i] / normal_sum
           
 
     def predict(self, X):
@@ -73,24 +72,12 @@ class BoostedDT:
         Returns:
             an n-dimensional numpy array of the predictions
         '''
-        # output predictions on the remaining data
-        n = X.shape[0]
+        n,d = X.shape
         beta_matrix = np.zeros((n, self.numOfClasses))
         
         for i in range(0, self.numBoostingIters):
-            y_pred = self.clf[i].predict(X)
+            cur_y_pred = self.clf[i].predict(X)
             for k in range(0, self.numOfClasses):
-                beta_matrix[:, k] = beta_matrix[:, k] + (y_pred == self.classes[k]) * self.betas[i]
+                beta_matrix[:, k] = beta_matrix[:, k] + (cur_y_pred == self.classes[k]) * self.betas[i]
           
         return self.classes[np.argmax(beta_matrix, axis = 1)]
-        
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
