@@ -63,10 +63,13 @@ Xtrain = trainDataset[:,:d-1]
 ytrain = trainDataset[:,d-1]
 testDataset = np.loadtxt('data/challengeTestUnlabeled.dat', delimiter=',')
 newBoosted.fit(Xtrain, ytrain)
+train_pred = newBoosted.predict(Xtrain)
+accuracyChallenge = accuracy_score(ytrain, train_pred)
+print "accuracy for the challenge training data set is " + str(accuracyChallenge)
 challengePred = newBoosted.predict(testDataset)
 predictions = ""
 for i in range(0, challengePred.size):
     predictions += str(int(challengePred[i])) + ","  
 predictions = predictions[:-1]
-print predictions
+# print predictions
 	
