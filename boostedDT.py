@@ -5,6 +5,7 @@
 
 import numpy as np
 from sklearn import tree
+from sklearn.tree import DecisionTreeClassifier
 
 class BoostedDT:
 
@@ -12,10 +13,9 @@ class BoostedDT:
         '''
         Constructor
         '''
-        #TODO
-	self.numBoostingIters = numBoostingIters
+    	self.numBoostingIters = numBoostingIters
 	self.maxTreeDepth = maxTreeDepth
-    
+	self.clf = None
 
     def fit(self, X, y):
         '''
@@ -24,8 +24,12 @@ class BoostedDT:
             X is a n-by-d numpy array
             y is an n-dimensional numpy array
         '''
-        #TODO
-	print "IN FIT"
+	#self.clf = DecisionTreeClassifier(max_depth = self.maxTreeDepth)
+	#self.clf.fit(X, y)
+	n,d = X.shape
+	instance_weights = np.zeros(d)
+	for iterNum in range(0, self.numBoostingIters):
+	    #train model h_t on X,y with instance weights w_t
 
     def predict(self, X):
         '''
@@ -35,4 +39,4 @@ class BoostedDT:
         Returns:
             an n-dimensional numpy array of the predictions
         '''
-        #TODO
+	return self.clf.predict(X)
