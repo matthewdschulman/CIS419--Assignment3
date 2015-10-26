@@ -26,7 +26,12 @@ class BoostedDT:
         '''
 	self.clf = DecisionTreeClassifier(max_depth = self.maxTreeDepth)
 	n,d = X.shape
-	instance_weights = np.ones(n)
+	instance_weights = np.zeros(n)
+	#initialize each value of initial_weights to 1/n
+	for weightIndex in range(0, n):
+	    instance_weights[weightIndex] = 1.0/n
+
+	print instance_weights
 	for iterNum in range(0, self.numBoostingIters):
 	    #train model h_t on X,y with instance weights w_t
 	    self.clf.fit(X, y, sample_weight=instance_weights)
