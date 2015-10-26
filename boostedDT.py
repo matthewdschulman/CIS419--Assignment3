@@ -9,13 +9,14 @@ from sklearn.tree import DecisionTreeClassifier
 
 class BoostedDT:
 
-    def __init__(self, numBoostingIters=100, maxTreeDepth=3):
+    def __init__(self, numBoostingIters=100, maxTreeDepth=3, numOfClasses=9):
         '''
         Constructor
         '''
     	self.numBoostingIters = numBoostingIters
 	self.maxTreeDepth = maxTreeDepth
 	self.clf = None
+	self.numOfClasses = numOfClasses
 
     def fit(self, X, y):
         '''
@@ -37,8 +38,14 @@ class BoostedDT:
 	    self.clf.fit(X, y, sample_weight=instance_weights)
 
 	    #compute the weighted training error rate of h_t
+	    error = 0
+	    cur_pred = self.clf.predict(X)
+	    for i in range(0,n):
+ 		if y[i] != cur_pred[i]:
+		     error += instance_weights[i]
 
 	    #choose beta based on AdaBoost-SAMME equation
+	    cur_beta = 0.5*(np.log((1-error)/error) + np.log(self.numOfClasses - 1))
 
 	    #update all instance weights
 
